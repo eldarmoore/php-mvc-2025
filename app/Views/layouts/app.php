@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php $this->yield('title', config('app.name', 'MVC Framework')); ?></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        footer {
+            background: #34495e;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        <?php $this->yield('styles'); ?>
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><?php echo e(config('app.name', 'MVC Framework')); ?></h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="content">
+            <?php $this->yield('content'); ?>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <?php echo date('Y'); ?> <?php echo e(config('app.name')); ?>. Built with Custom PHP MVC Framework.</p>
+        </div>
+    </footer>
+
+    <?php $this->yield('scripts'); ?>
+</body>
+</html>
