@@ -12,10 +12,28 @@ A powerful, lightweight PHP MVC framework built from scratch with modern feature
 - ✅ **Validation** - Comprehensive data validation system
 - ✅ **Security** - CSRF protection, XSS prevention, password hashing
 - ✅ **PSR-4 Autoloading** - Modern PHP autoloading standard
+- ✅ **Docker Support** - Complete Docker setup for development and production
+
+## Quick Start with Docker
+
+The fastest way to get started is using Docker:
+
+```bash
+# Linux/Mac
+make setup
+
+# Windows
+docker-setup.bat
+```
+
+Access your application at http://localhost:8080
+
+For detailed Docker instructions, see [DOCKER.md](DOCKER.md)
 
 ## Table of Contents
 
 - [Installation](#installation)
+- [Docker Setup](#docker-setup)
 - [Configuration](#configuration)
 - [Routing](#routing)
 - [Controllers](#controllers)
@@ -76,6 +94,83 @@ A powerful, lightweight PHP MVC framework built from scratch with modern feature
    ```
 
 6. **Access your application** at `http://localhost`
+
+## Docker Setup
+
+### Quick Start
+
+The recommended way to run this framework is using Docker:
+
+**Linux/Mac:**
+```bash
+# Initial setup
+make setup
+
+# Start containers
+make up
+
+# Stop containers
+make down
+
+# View logs
+make logs
+```
+
+**Windows:**
+```batch
+REM Initial setup
+docker-setup.bat
+
+REM Start containers
+docker-start.bat
+
+REM Stop containers
+docker-stop.bat
+```
+
+### Services
+
+When running with Docker, you get:
+
+- **Application**: http://localhost:8080
+- **PHPMyAdmin**: http://localhost:8081 (username: `mvc_user`, password: `secret`)
+- **Mailhog** (Email testing): http://localhost:8025
+
+### Docker Commands
+
+```bash
+# Open shell in app container
+make shell
+
+# Run composer commands
+make composer
+make composer-update
+
+# Access MySQL
+make db-shell
+
+# Enable/disable Xdebug
+make xdebug-on
+make xdebug-off
+
+# Backup database
+make backup
+
+# View all available commands
+make help
+```
+
+### Production Deployment
+
+```bash
+# Build production images
+make prod-build
+
+# Deploy to production
+make prod-up
+```
+
+For comprehensive Docker documentation, see **[DOCKER.md](DOCKER.md)**
 
 ## Configuration
 
