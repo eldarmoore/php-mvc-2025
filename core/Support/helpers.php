@@ -283,3 +283,90 @@ if (!function_exists('base_path')) {
         return BASE_PATH . ($path ? DIRECTORY_SEPARATOR . ltrim($path, '/\\') : '');
     }
 }
+
+if (!function_exists('logger')) {
+    /**
+     * Get a logger instance or log a message
+     *
+     * @param string|null $message
+     * @param array $context
+     * @param string $level
+     * @param string $channel
+     * @return \Core\Support\Logger|void
+     */
+    function logger(?string $message = null, array $context = [], string $level = 'info', string $channel = 'app')
+    {
+        static $loggers = [];
+
+        // Get or create logger for channel
+        if (!isset($loggers[$channel])) {
+            $loggers[$channel] = new \Core\Support\Logger($channel);
+        }
+
+        $logger = $loggers[$channel];
+
+        // If no message, return the logger instance
+        if ($message === null) {
+            return $logger;
+        }
+
+        // Log the message
+        $logger->log($level, $message, $context);
+    }
+}
+
+if (!function_exists('log_info')) {
+    /**
+     * Log an info message
+     *
+     * @param string $message
+     * @param array $context
+     * @return void
+     */
+    function log_info(string $message, array $context = []): void
+    {
+        logger($message, $context, 'info');
+    }
+}
+
+if (!function_exists('log_error')) {
+    /**
+     * Log an error message
+     *
+     * @param string $message
+     * @param array $context
+     * @return void
+     */
+    function log_error(string $message, array $context = []): void
+    {
+        logger($message, $context, 'error');
+    }
+}
+
+if (!function_exists('log_warning')) {
+    /**
+     * Log a warning message
+     *
+     * @param string $message
+     * @param array $context
+     * @return void
+     */
+    function log_warning(string $message, array $context = []): void
+    {
+        logger($message, $context, 'warning');
+    }
+}
+
+if (!function_exists('log_debug')) {
+    /**
+     * Log a debug message
+     *
+     * @param string $message
+     * @param array $context
+     * @return void
+     */
+    function log_debug(string $message, array $context = []): void
+    {
+        logger($message, $context, 'debug');
+    }
+}

@@ -11,6 +11,7 @@ A powerful, lightweight PHP MVC framework built from scratch with modern feature
 - ✅ **Template Engine** - Clean view system with layouts and partials
 - ✅ **Validation** - Comprehensive data validation system
 - ✅ **Security** - CSRF protection, XSS prevention, password hashing
+- ✅ **Logging** - Multi-level logging with channels and automatic rotation
 - ✅ **PSR-4 Autoloading** - Modern PHP autoloading standard
 - ✅ **Docker Support** - Complete Docker setup for development and production
 
@@ -44,6 +45,7 @@ For detailed Docker instructions, see [DOCKER.md](DOCKER.md)
 - [Database](#database)
 - [Middleware](#middleware)
 - [Helper Functions](#helper-functions)
+- [Logging](#logging)
 
 ## Installation
 
@@ -733,6 +735,125 @@ $path = public_path('index.php');
 // Old input (after validation failure)
 $value = old('email');
 ```
+
+## Logging
+
+The framework includes a powerful logging system with support for multiple log levels, channels, and automatic log rotation.
+
+### Log Levels
+
+- `emergency` - System is unusable
+- `alert` - Action must be taken immediately
+- `critical` - Critical conditions
+- `error` - Runtime errors
+- `warning` - Exceptional occurrences that are not errors
+- `notice` - Normal but significant events
+- `info` - Interesting events
+- `debug` - Detailed debug information
+
+### Basic Usage
+
+```php
+// Quick logging with helper functions
+log_info('User logged in', ['user_id' => 123]);
+log_error('Database connection failed', ['error' => $e->getMessage()]);
+log_warning('Deprecated function used');
+log_debug('Processing payment', ['amount' => 99.99]);
+
+// Using the logger instance
+logger()->info('Processing order', ['order_id' => 456]);
+logger()->error('Payment failed', ['reason' => 'Insufficient funds']);
+
+// Generic logger function
+logger('Application started', [], 'info');
+```
+
+### Using the Logger Class
+
+```php
+use Core\Support\Logger;
+
+// Create a logger instance
+$logger = new Logger('app');
+
+// Log messages at different levels
+$logger->emergency('System is down');
+$logger->alert('Database server not responding');
+$logger->critical('Application error', ['exception' => $e]);
+$logger->error('Failed to process payment');
+$logger->warning('Deprecated API endpoint used');
+$logger->notice('User account created');
+$logger->info('Processing request');
+$logger->debug('SQL query executed', ['query' => $sql]);
+```
+
+### Multiple Channels
+
+Organize logs using different channels:
+
+```php
+// Application logs
+logger('User action', ['action' => 'login'], 'info', 'app');
+
+// Security logs
+logger('Failed login attempt', ['ip' => $ip], 'warning', 'security');
+
+// Database logs
+logger('Slow query detected', ['time' => 2.5], 'warning', 'database');
+
+// Custom channel logger
+$paymentLogger = new Logger('payments');
+$paymentLogger->info('Payment processed', [
+    'amount' => 99.99,
+    'currency' => 'USD'
+]);
+```
+
+### Context Data
+
+Add context information to your logs:
+
+```php
+// Context with user information
+log_info('Order placed', [
+    'user_id' => 123,
+    'order_id' => 456,
+    'amount' => 99.99,
+    'items' => 3
+]);
+
+// Exception logging
+try {
+    // Some operation
+} catch (Exception $e) {
+    log_error('Operation failed: {message}', [
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => $e->getTraceAsString()
+    ]);
+}
+```
+
+### Log File Location
+
+Logs are stored in `storage/logs/` with daily rotation:
+
+```
+storage/logs/app-2024-11-15.log
+storage/logs/security-2024-11-15.log
+storage/logs/payments-2024-11-15.log
+```
+
+### Log Format
+
+```
+[2024-11-15 14:23:45] app.INFO: User logged in {"user_id":123,"username":"john"}
+[2024-11-15 14:24:12] app.ERROR: Database query failed {"query":"SELECT * FROM users","error":"Connection timeout"}
+[2024-11-15 14:25:30] security.WARNING: Failed login attempt {"ip":"192.168.1.1","attempts":3}
+```
+
+**Automatic Rotation:** Log files automatically rotate when they reach 10MB in size, keeping the last 5 files by default.
 
 ## Project Structure
 

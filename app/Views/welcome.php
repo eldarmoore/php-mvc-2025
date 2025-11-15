@@ -229,6 +229,7 @@
                         <a href="#database" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Database</a>
                         <a href="#middleware" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Middleware</a>
                         <a href="#helpers" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Helper Functions</a>
+                        <a href="#logging" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Logging</a>
                         <a href="#best-practices" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Best Practices</a>
                     </nav>
                 </div>
@@ -1666,6 +1667,175 @@ $path = storage_path('logs/app.log');
 $path = public_path('index.php');</code></pre>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <!-- Logging -->
+                <section id="logging" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Logging</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        The framework includes a powerful logging system that supports multiple log levels, channels, and automatic log rotation. Logs are stored in <code class="bg-gray-100 px-2 py-1 rounded">storage/logs</code>.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Log Levels</h3>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">emergency</code>
+                            <p class="text-sm text-gray-600">System is unusable</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">alert</code>
+                            <p class="text-sm text-gray-600">Action must be taken immediately</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">critical</code>
+                            <p class="text-sm text-gray-600">Critical conditions</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">error</code>
+                            <p class="text-sm text-gray-600">Runtime errors</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">warning</code>
+                            <p class="text-sm text-gray-600">Exceptional occurrences that are not errors</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">notice</code>
+                            <p class="text-sm text-gray-600">Normal but significant events</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">info</code>
+                            <p class="text-sm text-gray-600">Interesting events</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">debug</code>
+                            <p class="text-sm text-gray-600">Detailed debug information</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Basic Usage</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Quick logging with helper functions
+log_info('User logged in', ['user_id' => 123]);
+log_error('Database connection failed', ['error' => $e->getMessage()]);
+log_warning('Deprecated function used');
+log_debug('Processing payment', ['amount' => 99.99]);
+
+// Using the logger instance
+logger()->info('Processing order', ['order_id' => 456]);
+logger()->error('Payment failed', ['reason' => 'Insufficient funds']);
+
+// Generic logger function
+logger('Application started', [], 'info');</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Using the Logger Class</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">use Core\Support\Logger;
+
+// Create a logger instance
+$logger = new Logger('app');
+
+// Log messages at different levels
+$logger->emergency('System is down');
+$logger->alert('Database server not responding');
+$logger->critical('Application error', ['exception' => $e]);
+$logger->error('Failed to process payment');
+$logger->warning('Deprecated API endpoint used');
+$logger->notice('User account created');
+$logger->info('Processing request');
+$logger->debug('SQL query executed', ['query' => $sql]);</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Multiple Channels</h3>
+
+                    <p class="text-gray-700 mb-3">Use different channels to organize logs:</p>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Application logs
+logger('User action', ['action' => 'login'], 'info', 'app');
+
+// Security logs
+logger('Failed login attempt', ['ip' => $ip], 'warning', 'security');
+
+// Database logs
+logger('Slow query detected', ['time' => 2.5], 'warning', 'database');
+
+// Custom channel logger
+$paymentLogger = new Logger('payments');
+$paymentLogger->info('Payment processed', [
+    'amount' => 99.99,
+    'currency' => 'USD'
+]);</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Context Data</h3>
+
+                    <p class="text-gray-700 mb-3">Add context data to provide more details:</p>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Context with user information
+log_info('Order placed', [
+    'user_id' => 123,
+    'order_id' => 456,
+    'amount' => 99.99,
+    'items' => 3
+]);
+
+// Exception logging
+try {
+    // Some operation
+} catch (Exception $e) {
+    log_error('Operation failed: {message}', [
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => $e->getTraceAsString()
+    ]);
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Log File Location</h3>
+
+                    <p class="text-gray-700 mb-3">Logs are stored in the storage directory with daily rotation:</p>
+
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <code class="text-sm">storage/logs/app-2024-11-15.log</code><br>
+                        <code class="text-sm">storage/logs/security-2024-11-15.log</code><br>
+                        <code class="text-sm">storage/logs/payments-2024-11-15.log</code>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Log Format</h3>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-bash">[2024-11-15 14:23:45] app.INFO: User logged in {"user_id":123,"username":"john"}
+[2024-11-15 14:24:12] app.ERROR: Database query failed {"query":"SELECT * FROM users","error":"Connection timeout"}
+[2024-11-15 14:25:30] security.WARNING: Failed login attempt {"ip":"192.168.1.1","attempts":3}</code></pre>
+                    </div>
+
+                    <div class="mt-6 bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
+                        <p class="text-blue-900">
+                            <strong>Automatic Rotation:</strong> Log files automatically rotate when they reach 10MB in size, keeping the last 5 files by default. This prevents log files from consuming too much disk space.
+                        </p>
                     </div>
                 </section>
 
