@@ -1,115 +1,1919 @@
-<?php $this->extend('layouts.app'); ?>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete documentation for the Custom PHP MVC Framework - A modern, lightweight framework built from scratch">
+    <title>PHP MVC Framework - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-<?php $this->section('title'); ?>
-Welcome to MVC Framework
-<?php $this->endSection(); ?>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-<?php $this->section('styles'); ?>
-.welcome-hero {
-    text-align: center;
-    padding: 3rem 0;
-}
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-.welcome-hero h1 {
-    font-size: 3rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-}
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
 
-.welcome-hero p {
-    font-size: 1.2rem;
-    color: #7f8c8d;
-    margin-bottom: 2rem;
-}
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
+        .nav-link {
+            transition: all 0.2s ease;
+        }
 
-.feature {
-    padding: 1.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
+        .nav-link:hover {
+            transform: translateX(4px);
+        }
 
-.feature:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+        .nav-link.active {
+            color: #667eea;
+            font-weight: 600;
+            border-left-color: #667eea;
+        }
 
-.feature h3 {
-    color: #3498db;
-    margin-bottom: 0.5rem;
-}
+        .code-block {
+            position: relative;
+        }
 
-.feature p {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-}
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
 
-.cta {
-    text-align: center;
-    margin-top: 3rem;
-}
+        .code-block:hover .copy-button {
+            opacity: 1;
+        }
 
-.btn {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    background: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
+        .copy-button.copied {
+            opacity: 1 !important;
+        }
 
-.btn:hover {
-    background: #2980b9;
-}
-<?php $this->endSection(); ?>
+        pre {
+            margin: 0;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
 
-<?php $this->section('content'); ?>
-<div class="welcome-hero">
-    <h1>Welcome to Your Custom MVC Framework!</h1>
-    <p>A powerful, lightweight PHP framework built from scratch</p>
-</div>
+        .hljs {
+            background: #1e1e1e !important;
+            padding: 1.5rem !important;
+        }
 
-<div class="features">
-    <div class="feature">
-        <h3>🚀 Routing System</h3>
-        <p>Flexible routing with support for dynamic parameters, HTTP methods, and middleware</p>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .search-highlight {
+            background-color: #fef08a;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-button" class="fixed bottom-6 right-6 z-50 lg:hidden bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center fade-in">
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-6">
+                    PHP MVC Framework
+                </h1>
+                <p class="text-xl md:text-2xl text-purple-100 mb-8 max-w-3xl mx-auto">
+                    A powerful, lightweight PHP MVC framework built from scratch with modern features and best practices
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#quick-start" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-all shadow-lg hover:shadow-xl">
+                        Get Started
+                    </a>
+                    <a href="https://github.com" class="bg-purple-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-900 transition-all">
+                        View on GitHub
+                    </a>
+                </div>
+
+                <!-- Feature Badges -->
+                <div class="mt-12 flex flex-wrap justify-center gap-3">
+                    <span class="badge bg-purple-800 text-white">MVC Architecture</span>
+                    <span class="badge bg-purple-800 text-white">PSR-4 Autoloading</span>
+                    <span class="badge bg-purple-800 text-white">Docker Ready</span>
+                    <span class="badge bg-purple-800 text-white">Security Built-in</span>
+                    <span class="badge bg-purple-800 text-white">ORM & Query Builder</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="feature">
-        <h3>🎨 Template Engine</h3>
-        <p>Clean template syntax with layouts, sections, and partials support</p>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row gap-12">
+
+            <!-- Sidebar Navigation -->
+            <aside id="mobile-menu" class="lg:w-64 flex-shrink-0 fixed lg:static inset-0 z-40 transform -translate-x-full lg:translate-x-0 bg-white lg:bg-transparent">
+                <div class="sidebar bg-white rounded-lg shadow-md p-6 lg:shadow-sm">
+                    <!-- Close button for mobile -->
+                    <button id="mobile-menu-close" class="lg:hidden absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+
+                    <h3 class="text-lg font-bold mb-4 text-gray-900">Documentation</h3>
+
+                    <!-- Search Box -->
+                    <div class="mb-6">
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Search docs..."
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                        >
+                    </div>
+
+                    <nav class="space-y-1">
+                        <a href="#introduction" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Introduction</a>
+                        <a href="#quick-start" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Quick Start</a>
+                        <a href="#features" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Features</a>
+                        <a href="#installation" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Installation</a>
+                        <a href="#docker-setup" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Docker Setup</a>
+                        <a href="#configuration" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Configuration</a>
+                        <a href="#routing" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Routing</a>
+                        <a href="#controllers" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Controllers</a>
+                        <a href="#models" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Models & ORM</a>
+                        <a href="#views" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Views & Templates</a>
+                        <a href="#validation" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Validation</a>
+                        <a href="#security" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Security</a>
+                        <a href="#database" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Database</a>
+                        <a href="#middleware" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Middleware</a>
+                        <a href="#helpers" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Helper Functions</a>
+                        <a href="#best-practices" class="nav-link block py-2 px-3 text-sm text-gray-700 hover:text-purple-600 border-l-2 border-transparent">Best Practices</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Documentation Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- Introduction -->
+                <section id="introduction" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-4 gradient-text">Introduction</h2>
+                    <p class="text-gray-700 text-lg mb-4">
+                        Welcome to the PHP MVC Framework documentation! This framework provides a solid foundation for building modern web applications with PHP. Built from scratch with clean architecture principles, it offers all the essential features you need while remaining lightweight and easy to understand.
+                    </p>
+                    <p class="text-gray-700 text-lg">
+                        Whether you're building a small project or a large application, this framework scales with your needs. With built-in Docker support, comprehensive security features, and an intuitive API, you'll be productive from day one.
+                    </p>
+                </section>
+
+                <!-- Quick Start -->
+                <section id="quick-start" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Quick Start</h2>
+                    <p class="text-gray-700 mb-6">
+                        Get up and running in minutes with Docker:
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="border-2 border-purple-200 rounded-lg p-6 hover:border-purple-400 transition-all">
+                            <h3 class="text-xl font-semibold mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                Linux/Mac
+                            </h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="make setup">
+                                    Copy
+                                </button>
+                                <pre><code class="language-bash"># Initial setup
+make setup
+
+# Start the application
+make up
+
+# Access at http://localhost:8080</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-purple-200 rounded-lg p-6 hover:border-purple-400 transition-all">
+                            <h3 class="text-xl font-semibold mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                Windows
+                            </h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="docker-setup.bat">
+                                    Copy
+                                </button>
+                                <pre><code class="language-bash"># Initial setup
+docker-setup.bat
+
+# Start the application
+docker-start.bat
+
+# Access at http://localhost:8080</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-purple-50 border-l-4 border-purple-600 p-4 rounded">
+                        <p class="text-purple-900">
+                            <strong>Pro Tip:</strong> After setup, you'll have access to PHPMyAdmin at
+                            <code class="bg-purple-200 px-2 py-1 rounded">http://localhost:8081</code> and
+                            Mailhog at <code class="bg-purple-200 px-2 py-1 rounded">http://localhost:8025</code>
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Features -->
+                <section id="features" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Features</h2>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="feature-card border border-gray-200 rounded-lg p-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">MVC Architecture</h3>
+                            <p class="text-gray-600 text-sm">Clean separation of concerns with Models, Views, and Controllers</p>
+                        </div>
+
+                        <div class="feature-card border border-gray-200 rounded-lg p-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">Powerful Routing</h3>
+                            <p class="text-gray-600 text-sm">Flexible routing with parameters, groups, and named routes</p>
+                        </div>
+
+                        <div class="feature-card border border-gray-200 rounded-lg p-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">ORM & Query Builder</h3>
+                            <p class="text-gray-600 text-sm">Intuitive database abstraction with eloquent-like syntax</p>
+                        </div>
+
+                        <div class="feature-card border border-gray-200 rounded-lg p-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">Security First</h3>
+                            <p class="text-gray-600 text-sm">CSRF protection, XSS prevention, and secure password hashing</p>
+                        </div>
+
+                        <div class="feature-card border border-gray-200 rounded-lg p-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">Data Validation</h3>
+                            <p class="text-gray-600 text-sm">Comprehensive validation system with custom rules and messages</p>
+                        </div>
+
+                        <div class="feature-card border border-gray-200 rounded-lg p-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">Docker Support</h3>
+                            <p class="text-gray-600 text-sm">Complete Docker setup for development and production</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section id="installation" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Installation</h2>
+
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold mb-3">Requirements</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700">PHP 8.0 or higher</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700">PDO extension for database operations</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700">Apache/Nginx web server</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700">Composer (optional, for dependency management)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold mb-3">Manual Installation Steps</h3>
+
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold mb-2">1. Clone the Repository</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="git clone https://github.com/your-repo/php-mvc-framework.git
+cd php-mvc-framework">
+                                    Copy
+                                </button>
+                                <pre><code class="language-bash">git clone https://github.com/your-repo/php-mvc-framework.git
+cd php-mvc-framework</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold mb-2">2. Configure Environment</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="cp .env.example .env">
+                                    Copy
+                                </button>
+                                <pre><code class="language-bash">cp .env.example .env
+# Edit .env with your database credentials</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold mb-2">3. Configure Web Server</h4>
+                            <p class="text-gray-700 mb-2">Point your web server's document root to the <code class="bg-gray-100 px-2 py-1 rounded">public</code> directory.</p>
+
+                            <div class="mb-4">
+                                <p class="font-medium mb-2">Nginx Configuration:</p>
+                                <div class="code-block">
+                                    <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="server {
+    listen 80;
+    server_name localhost;
+    root /path/to/project/public;
+
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}">
+                                        Copy
+                                    </button>
+                                    <pre><code class="language-nginx">server {
+    listen 80;
+    server_name localhost;
+    root /path/to/project/public;
+
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold mb-2">4. Set Up Database</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="mysql -u your_username -p your_database < database/migrations/001_create_users_table.sql">
+                                    Copy
+                                </button>
+                                <pre><code class="language-bash">mysql -u your_username -p your_database < database/migrations/001_create_users_table.sql</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Docker Setup -->
+                <section id="docker-setup" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Docker Setup</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        Docker provides the easiest way to run the framework with all dependencies pre-configured. The setup includes PHP-FPM, Nginx, MySQL, Redis, PHPMyAdmin, and Mailhog.
+                    </p>
+
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="border-2 border-blue-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-blue-600 mb-2">:8080</div>
+                            <div class="text-sm text-gray-600">Application</div>
+                        </div>
+                        <div class="border-2 border-green-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-green-600 mb-2">:8081</div>
+                            <div class="text-sm text-gray-600">PHPMyAdmin</div>
+                        </div>
+                        <div class="border-2 border-purple-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-purple-600 mb-2">:8025</div>
+                            <div class="text-sm text-gray-600">Mailhog</div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Available Make Commands</h3>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make setup</code>
+                            <p class="text-sm text-gray-600 mt-1">Initial setup (creates .env, builds containers, installs dependencies)</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make up</code>
+                            <p class="text-sm text-gray-600 mt-1">Start all containers</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make down</code>
+                            <p class="text-sm text-gray-600 mt-1">Stop all containers</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make shell</code>
+                            <p class="text-sm text-gray-600 mt-1">Open bash shell in app container</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make logs</code>
+                            <p class="text-sm text-gray-600 mt-1">View container logs</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make db-shell</code>
+                            <p class="text-sm text-gray-600 mt-1">Access MySQL shell</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make xdebug-on</code>
+                            <p class="text-sm text-gray-600 mt-1">Enable Xdebug for debugging</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <code class="text-purple-600 font-semibold">make backup</code>
+                            <p class="text-sm text-gray-600 mt-1">Backup database to storage/backups</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
+                        <p class="text-blue-900">
+                            <strong>Note:</strong> Run <code class="bg-blue-200 px-2 py-1 rounded">make help</code> to see all available commands
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Configuration -->
+                <section id="configuration" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Configuration</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        All configuration files are located in the <code class="bg-gray-100 px-2 py-1 rounded">config</code> directory. The framework uses environment variables for sensitive data.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Application Configuration</h3>
+                    <p class="text-gray-600 mb-3">Located at <code class="bg-gray-100 px-2 py-1 rounded">config/app.php</code></p>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="return [
+    'name' => env('APP_NAME', 'My Application'),
+    'env' => env('APP_ENV', 'production'),
+    'debug' => env('APP_DEBUG', false),
+    'url' => env('APP_URL', 'http://localhost'),
+    'timezone' => 'UTC',
+];">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">return [
+    'name' => env('APP_NAME', 'My Application'),
+    'env' => env('APP_ENV', 'production'),
+    'debug' => env('APP_DEBUG', false),
+    'url' => env('APP_URL', 'http://localhost'),
+    'timezone' => 'UTC',
+];</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Database Configuration</h3>
+                    <p class="text-gray-600 mb-3">Located at <code class="bg-gray-100 px-2 py-1 rounded">config/database.php</code></p>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="return [
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'mvc_framework'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+        ],
+    ],
+];">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">return [
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'mvc_framework'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+        ],
+    ],
+];</code></pre>
+                    </div>
+                </section>
+
+                <!-- Routing -->
+                <section id="routing" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Routing</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        Routes are defined in <code class="bg-gray-100 px-2 py-1 rounded">routes/web.php</code>. The router supports all HTTP methods, dynamic parameters, middleware, and route groups.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Basic Routing</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="use Core\Routing\Router;
+
+$router = app(Router::class);
+
+// GET request
+$router->get('/', function () {
+    return view('welcome');
+});
+
+// POST request
+$router->post('/submit', 'FormController@submit');
+
+// Other HTTP methods
+$router->put('/users/{id}', 'UserController@update');
+$router->delete('/users/{id}', 'UserController@destroy');
+$router->patch('/users/{id}', 'UserController@patch');">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">use Core\Routing\Router;
+
+$router = app(Router::class);
+
+// GET request
+$router->get('/', function () {
+    return view('welcome');
+});
+
+// POST request
+$router->post('/submit', 'FormController@submit');
+
+// Other HTTP methods
+$router->put('/users/{id}', 'UserController@update');
+$router->delete('/users/{id}', 'UserController@destroy');
+$router->patch('/users/{id}', 'UserController@patch');</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Route Parameters</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="// Required parameter
+$router->get('/users/{id}', function ($id) {
+    return &quot;User ID: $id&quot;;
+});
+
+// Optional parameter
+$router->get('/posts/{id}/comments/{commentId?}', function ($id, $commentId = null) {
+    if ($commentId) {
+        return &quot;Post $id, Comment $commentId&quot;;
+    }
+    return &quot;Post $id&quot;;
+});
+
+// Multiple parameters
+$router->get('/category/{category}/product/{id}', function ($category, $id) {
+    return &quot;Category: $category, Product: $id&quot;;
+});">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Required parameter
+$router->get('/users/{id}', function ($id) {
+    return "User ID: $id";
+});
+
+// Optional parameter
+$router->get('/posts/{id}/comments/{commentId?}', function ($id, $commentId = null) {
+    if ($commentId) {
+        return "Post $id, Comment $commentId";
+    }
+    return "Post $id";
+});
+
+// Multiple parameters
+$router->get('/category/{category}/product/{id}', function ($category, $id) {
+    return "Category: $category, Product: $id";
+});</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Route Groups</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="// Group with prefix
+$router->group(['prefix' => 'api'], function ($router) {
+    $router->get('/users', 'Api\UserController@index');
+    $router->get('/posts', 'Api\PostController@index');
+});
+
+// Group with middleware
+$router->group(['middleware' => 'auth'], function ($router) {
+    $router->get('/dashboard', 'DashboardController@index');
+    $router->get('/profile', 'ProfileController@index');
+});
+
+// Combined prefix and middleware
+$router->group(['prefix' => 'admin', 'middleware' => 'auth'], function ($router) {
+    $router->get('/users', 'Admin\UserController@index');
+    $router->get('/settings', 'Admin\SettingsController@index');
+});">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Group with prefix
+$router->group(['prefix' => 'api'], function ($router) {
+    $router->get('/users', 'Api\UserController@index');
+    $router->get('/posts', 'Api\PostController@index');
+});
+
+// Group with middleware
+$router->group(['middleware' => 'auth'], function ($router) {
+    $router->get('/dashboard', 'DashboardController@index');
+    $router->get('/profile', 'ProfileController@index');
+});
+
+// Combined prefix and middleware
+$router->group(['prefix' => 'admin', 'middleware' => 'auth'], function ($router) {
+    $router->get('/users', 'Admin\UserController@index');
+    $router->get('/settings', 'Admin\SettingsController@index');
+});</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Named Routes</h3>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700" data-copy="// Define named route
+$router->get('/profile', 'ProfileController@show')->name('profile');
+$router->get('/users/{id}', 'UserController@show')->name('user.show');
+
+// Generate URL from named route
+$url = $router->route('profile');
+$userUrl = $router->route('user.show', ['id' => 123]);">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Define named route
+$router->get('/profile', 'ProfileController@show')->name('profile');
+$router->get('/users/{id}', 'UserController@show')->name('user.show');
+
+// Generate URL from named route
+$url = $router->route('profile');
+$userUrl = $router->route('user.show', ['id' => 123]);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Controllers -->
+                <section id="controllers" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Controllers</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        Controllers handle your application logic and are located in <code class="bg-gray-100 px-2 py-1 rounded">app/Controllers</code>. They extend the base Controller class which provides helpful methods.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Creating a Controller</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;?php
+
+namespace App\Controllers;
+
+use Core\Http\Controller;
+use Core\Http\Response;
+use App\Models\User;
+
+class UserController extends Controller
+{
+    public function index(): Response
+    {
+        // Get all users
+        $users = User::all();
+
+        // Return view with data
+        return $this->view('users.index', [
+            'users' => $users
+        ]);
+    }
+
+    public function show(string $id): Response
+    {
+        $user = User::findOrFail($id);
+
+        return $this->view('users.show', [
+            'user' => $user
+        ]);
+    }
+
+    public function store(): Response
+    {
+        // Validate request
+        $validated = $this->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        // Hash password
+        $validated['password'] = Hash::make($validated['password']);
+
+        // Create user
+        $user = User::create($validated);
+
+        // Redirect with flash message
+        $this->flash('success', 'User created successfully!');
+        return $this->redirect('/users');
+    }
+
+    public function destroy(string $id): Response
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        $this->flash('success', 'User deleted successfully!');
+        return $this->back();
+    }
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Controller Methods</h3>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="border-l-4 border-purple-500 pl-4 bg-gray-50 p-3 rounded">
+                            <code class="text-purple-600 font-semibold">view($view, $data)</code>
+                            <p class="text-sm text-gray-600 mt-1">Render a view template</p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4 bg-gray-50 p-3 rounded">
+                            <code class="text-purple-600 font-semibold">json($data, $status)</code>
+                            <p class="text-sm text-gray-600 mt-1">Return JSON response</p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4 bg-gray-50 p-3 rounded">
+                            <code class="text-purple-600 font-semibold">redirect($url)</code>
+                            <p class="text-sm text-gray-600 mt-1">Redirect to URL</p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4 bg-gray-50 p-3 rounded">
+                            <code class="text-purple-600 font-semibold">back()</code>
+                            <p class="text-sm text-gray-600 mt-1">Redirect to previous page</p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4 bg-gray-50 p-3 rounded">
+                            <code class="text-purple-600 font-semibold">validate($rules)</code>
+                            <p class="text-sm text-gray-600 mt-1">Validate request data</p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-500 pl-4 bg-gray-50 p-3 rounded">
+                            <code class="text-purple-600 font-semibold">flash($key, $value)</code>
+                            <p class="text-sm text-gray-600 mt-1">Flash data to session</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">API Controller Example</h3>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">public function apiIndex(): Response
+{
+    $users = User::all();
+
+    return $this->json([
+        'success' => true,
+        'data' => $users,
+        'message' => 'Users retrieved successfully'
+    ]);
+}
+
+public function apiStore(): Response
+{
+    try {
+        $validated = $this->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+        ]);
+
+        $user = User::create($validated);
+
+        return $this->json([
+            'success' => true,
+            'data' => $user,
+            'message' => 'User created successfully'
+        ], 201);
+    } catch (\Exception $e) {
+        return $this->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 400);
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Models -->
+                <section id="models" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Models & ORM</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        Models represent database tables and provide an elegant ORM for database operations. They are located in <code class="bg-gray-100 px-2 py-1 rounded">app/Models</code>.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Creating a Model</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;?php
+
+namespace App\Models;
+
+use Core\Database\Model;
+
+class User extends Model
+{
+    // Table name (auto-detected as 'users' from class name)
+    protected string $table = 'users';
+
+    // Primary key
+    protected string $primaryKey = 'id';
+
+    // Mass assignable attributes
+    protected array $fillable = ['name', 'email', 'password'];
+
+    // Enable timestamps (created_at, updated_at)
+    protected bool $timestamps = true;
+
+    // Hidden attributes (won't be returned in JSON)
+    protected array $hidden = ['password'];
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">CRUD Operations</h3>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold mb-2 text-lg">Create</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Method 1: Using create()
+$user = User::create([
+    'name' => 'John Doe',
+    'email' => 'john@example.com',
+    'password' => Hash::make('password123')
+]);
+
+// Method 2: Using new and save()
+$user = new User();
+$user->name = 'Jane Doe';
+$user->email = 'jane@example.com';
+$user->password = Hash::make('password123');
+$user->save();</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-2 text-lg">Read</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Find by ID
+$user = User::find(1);
+
+// Find or throw exception
+$user = User::findOrFail(1);
+
+// Get all records
+$users = User::all();
+
+// Get first record
+$user = User::first();
+
+// Query with conditions
+$users = User::where('email', '=', 'john@example.com')->get();
+$activeUsers = User::where('status', '=', 'active')->get();
+$user = User::where('id', '>', 10)->first();</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-2 text-lg">Update</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">$user = User::find(1);
+$user->name = 'Updated Name';
+$user->save();
+
+// Or update multiple at once
+$user->fill([
+    'name' => 'New Name',
+    'email' => 'new@example.com'
+])->save();</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-2 text-lg">Delete</h4>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">$user = User::find(1);
+$user->delete();</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 mt-8">Relationships</h3>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">class User extends Model
+{
+    // One-to-many relationship
+    public function posts(): array
+    {
+        return $this->hasMany(Post::class, 'user_id');
+    }
+
+    // One-to-one relationship
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id');
+    }
+}
+
+class Post extends Model
+{
+    // Inverse relationship (belongs to)
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+}
+
+// Usage
+$user = User::find(1);
+$posts = $user->posts();  // Get all posts by user
+$profile = $user->profile();  // Get user profile</code></pre>
+                    </div>
+                </section>
+
+                <!-- Views -->
+                <section id="views" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Views & Templates</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        Views are located in <code class="bg-gray-100 px-2 py-1 rounded">app/Views</code> and use PHP templates with layout support for a clean, organized structure.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Creating a Layout</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;!-- app/Views/layouts/app.php --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;&lt;?php $this->yield('title', 'My Application'); ?&gt;&lt;/title&gt;
+    &lt;link rel="stylesheet" href="&lt;?php echo asset('css/app.css'); ?&gt;"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;!-- Navigation --&gt;
+    &lt;/nav&gt;
+
+    &lt;main&gt;
+        &lt;?php $this->yield('content'); ?&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;!-- Footer --&gt;
+    &lt;/footer&gt;
+
+    &lt;script src="&lt;?php echo asset('js/app.js'); ?&gt;"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Using the Layout</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;!-- app/Views/users/index.php --&gt;
+&lt;?php $this->extend('layouts.app'); ?&gt;
+
+&lt;?php $this->section('title'); ?&gt;
+Users List
+&lt;?php $this->endSection(); ?&gt;
+
+&lt;?php $this->section('content'); ?&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Users&lt;/h1&gt;
+
+    &lt;table class="table"&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;ID&lt;/th&gt;
+                &lt;th&gt;Name&lt;/th&gt;
+                &lt;th&gt;Email&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;?php foreach ($users as $user): ?&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;?php echo e($user->id); ?&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;?php echo e($user->name); ?&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;?php echo e($user->email); ?&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+&lt;?php $this->endSection(); ?&gt;</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Rendering Views</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// In controller
+return $this->view('users.index', [
+    'users' => $users
+]);
+
+// Or using helper function
+return view('users.index', ['users' => $users]);</code></pre>
+                    </div>
+
+                    <div class="bg-yellow-50 border-l-4 border-yellow-600 p-4 rounded">
+                        <p class="text-yellow-900">
+                            <strong>Security:</strong> Always escape user input using <code class="bg-yellow-200 px-2 py-1 rounded">e($variable)</code> or <code class="bg-yellow-200 px-2 py-1 rounded">$this->e($variable)</code> to prevent XSS attacks
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Validation -->
+                <section id="validation" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Validation</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        The validation system provides comprehensive data validation with built-in rules and custom error messages.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Available Validation Rules</h3>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">required</code>
+                            <p class="text-sm text-gray-600">Field must be present</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">email</code>
+                            <p class="text-sm text-gray-600">Must be valid email</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">min:value</code>
+                            <p class="text-sm text-gray-600">Minimum length/value</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">max:value</code>
+                            <p class="text-sm text-gray-600">Maximum length/value</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">numeric</code>
+                            <p class="text-sm text-gray-600">Must be numeric</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">integer</code>
+                            <p class="text-sm text-gray-600">Must be integer</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">alpha</code>
+                            <p class="text-sm text-gray-600">Only letters</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">alpha_num</code>
+                            <p class="text-sm text-gray-600">Letters and numbers</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">in:foo,bar</code>
+                            <p class="text-sm text-gray-600">Must be in list</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">url</code>
+                            <p class="text-sm text-gray-600">Valid URL</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">confirmed</code>
+                            <p class="text-sm text-gray-600">Must match {field}_confirmation</p>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3">
+                            <code class="text-purple-600 font-semibold">regex:pattern</code>
+                            <p class="text-sm text-gray-600">Match regex pattern</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Using Validation</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// In controller
+public function store(): Response
+{
+    // Validate request data
+    $validated = $this->validate([
+        'name' => 'required|min:3|max:255',
+        'email' => 'required|email',
+        'age' => 'required|integer|min:18',
+        'password' => 'required|min:8|confirmed',
+        'role' => 'required|in:admin,user,moderator',
+    ]);
+
+    // If validation passes, $validated contains the validated data
+    $user = User::create($validated);
+
+    return $this->redirect('/users');
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Custom Error Messages</h3>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">$validated = $this->validate([
+    'email' => 'required|email',
+    'password' => 'required|min:8',
+], [
+    'email.required' => 'Please provide your email address',
+    'email.email' => 'The email format is invalid',
+    'password.required' => 'Password is required',
+    'password.min' => 'Password must be at least 8 characters',
+]);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Security -->
+                <section id="security" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Security</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        The framework includes built-in security features to protect your application from common vulnerabilities.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">CSRF Protection</h3>
+
+                    <p class="text-gray-700 mb-3">Protect your forms from Cross-Site Request Forgery attacks:</p>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;!-- In your form view --&gt;
+&lt;form method="POST" action="/users"&gt;
+    &lt;?php echo csrf_field(); ?&gt;
+
+    &lt;input type="text" name="name"&gt;
+    &lt;input type="email" name="email"&gt;
+
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;!-- Or manually --&gt;
+&lt;input type="hidden" name="_token" value="&lt;?php echo csrf_token(); ?&gt;"&gt;</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">XSS Protection</h3>
+
+                    <p class="text-gray-700 mb-3">Always escape output to prevent XSS attacks:</p>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;!-- Escape user input --&gt;
+&lt;p&gt;&lt;?php echo e($user->bio); ?&gt;&lt;/p&gt;
+
+&lt;!-- In views extending View class --&gt;
+&lt;p&gt;&lt;?php $this->e($user->bio); ?&gt;&lt;/p&gt;
+
+&lt;!-- NEVER do this with user input --&gt;
+&lt;p&gt;&lt;?php echo $user->bio; ?&gt; &lt;!-- DANGEROUS! --&gt;&lt;/p&gt;</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Password Hashing</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">use Core\Security\Hash;
+
+// Hash a password
+$hashedPassword = Hash::make('password123');
+
+// Verify a password
+if (Hash::check('password123', $hashedPassword)) {
+    // Password is correct
+    echo "Authentication successful";
+} else {
+    // Password is incorrect
+    echo "Invalid credentials";
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">SQL Injection Prevention</h3>
+
+                    <p class="text-gray-700 mb-3">The framework automatically uses prepared statements to prevent SQL injection:</p>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Safe - uses prepared statements
+$users = User::where('email', '=', $email)->get();
+
+// Safe - uses query builder with bindings
+$users = Database::table('users')
+    ->where('email', '=', $email)
+    ->get();</code></pre>
+                    </div>
+                </section>
+
+                <!-- Database -->
+                <section id="database" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Database</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        The framework provides a powerful query builder for database operations beyond the ORM.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Query Builder</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">use Core\Database\Database;
+
+// Select
+$users = Database::table('users')
+    ->select('id', 'name', 'email')
+    ->where('active', '=', 1)
+    ->orderBy('name', 'ASC')
+    ->limit(10)
+    ->get();
+
+// Joins
+$posts = Database::table('posts')
+    ->join('users', 'posts.user_id', '=', 'users.id')
+    ->select('posts.*', 'users.name as author')
+    ->where('posts.published', '=', true)
+    ->get();
+
+// Insert
+$id = Database::table('users')->insert([
+    'name' => 'John Doe',
+    'email' => 'john@example.com',
+    'created_at' => date('Y-m-d H:i:s')
+]);
+
+// Update
+$affected = Database::table('users')
+    ->where('id', '=', 1)
+    ->update(['name' => 'Updated Name']);
+
+// Delete
+$deleted = Database::table('users')
+    ->where('id', '=', 1)
+    ->delete();</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Transactions</h3>
+
+                    <p class="text-gray-700 mb-3">Use transactions to ensure data integrity:</p>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">Database::transaction(function ($db) {
+    // All database operations here are wrapped in a transaction
+    $userId = Database::table('users')->insert([
+        'name' => 'John Doe',
+        'email' => 'john@example.com'
+    ]);
+
+    Database::table('profiles')->insert([
+        'user_id' => $userId,
+        'bio' => 'Hello, I am John!'
+    ]);
+
+    // If any operation fails, all changes are rolled back
+});</code></pre>
+                    </div>
+                </section>
+
+                <!-- Middleware -->
+                <section id="middleware" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Middleware</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        Middleware provides a convenient mechanism for filtering HTTP requests entering your application.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4">Creating Middleware</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">&lt;?php
+
+namespace App\Middleware;
+
+use Core\Http\Middleware;
+use Core\Http\Request;
+use Core\Http\Response;
+
+class AuthMiddleware extends Middleware
+{
+    public function handle(Request $request, callable $next): Response
+    {
+        // Check if user is authenticated
+        if (!isset($_SESSION['user_id'])) {
+            // Redirect to login
+            return redirect('/login');
+        }
+
+        // Continue to next middleware or controller
+        return $next($request);
+    }
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Registering Middleware</h3>
+
+                    <div class="code-block mb-6">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// In routes/web.php
+$router = app(Router::class);
+
+// Register middleware
+$router->registerMiddleware('auth', AuthMiddleware::class);
+$router->registerMiddleware('csrf', CsrfMiddleware::class);</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Applying Middleware to Routes</h3>
+
+                    <div class="code-block">
+                        <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Copy
+                        </button>
+                        <pre><code class="language-php">// Single middleware
+$router->get('/dashboard', 'DashboardController@index')
+       ->middleware('auth');
+
+// Multiple middleware
+$router->post('/users', 'UserController@store')
+       ->middleware('auth', 'csrf');
+
+// Middleware on route groups
+$router->group(['middleware' => 'auth'], function ($router) {
+    $router->get('/dashboard', 'DashboardController@index');
+    $router->get('/profile', 'ProfileController@index');
+    $router->get('/settings', 'SettingsController@index');
+});</code></pre>
+                    </div>
+                </section>
+
+                <!-- Helper Functions -->
+                <section id="helpers" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Helper Functions</h2>
+
+                    <p class="text-gray-700 mb-6">
+                        The framework provides many helper functions to make common tasks easier.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Configuration</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Get config value
+$name = config('app.name', 'Default');
+
+// Get environment variable
+$env = env('APP_ENV', 'production');</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Application</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Get application instance
+$app = app();
+
+// Resolve from container
+$service = app(ServiceClass::class);</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Views</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Render view
+$content = view('welcome', [
+    'name' => 'John'
+]);</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">URLs</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Generate URL
+$url = url('/path');
+
+// Asset URL
+$asset = asset('css/style.css');</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Redirects</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Redirect to URL
+redirect('/home');
+
+// Redirect back
+back();</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Debugging</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Dump and die
+dd($variable);
+
+// Dump only
+dump($variable);</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Security</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// CSRF token
+$token = csrf_token();
+
+// CSRF field
+$field = csrf_field();
+
+// Escape output
+$safe = e($input);</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Paths</h3>
+                            <div class="code-block">
+                                <button class="copy-button bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    Copy
+                                </button>
+                                <pre><code class="language-php">// Base path
+$path = base_path('file.txt');
+
+// Storage path
+$path = storage_path('logs/app.log');
+
+// Public path
+$path = public_path('index.php');</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section id="best-practices" class="mb-16 fade-in bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Best Practices</h2>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Always Validate User Input</h3>
+                                <p class="text-gray-600">Use the validation system to validate all user input before processing it.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Escape All Output</h3>
+                                <p class="text-gray-600">Use <code class="bg-gray-100 px-2 py-1 rounded">e()</code> to escape output and prevent XSS attacks.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Use CSRF Protection</h3>
+                                <p class="text-gray-600">Always include CSRF tokens in your forms to prevent CSRF attacks.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Hash Passwords</h3>
+                                <p class="text-gray-600">Never store plain text passwords. Use <code class="bg-gray-100 px-2 py-1 rounded">Hash::make()</code> to hash passwords.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Follow MVC Patterns</h3>
+                                <p class="text-gray-600">Keep business logic in controllers, data handling in models, and presentation in views.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Use Environment Variables</h3>
+                                <p class="text-gray-600">Store sensitive configuration in <code class="bg-gray-100 px-2 py-1 rounded">.env</code> file, never commit it to version control.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Enable Debug in Development Only</h3>
+                                <p class="text-gray-600">Set <code class="bg-gray-100 px-2 py-1 rounded">APP_DEBUG=true</code> in development, <code class="bg-gray-100 px-2 py-1 rounded">false</code> in production.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start border-l-4 border-green-500 pl-4 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="font-semibold text-lg">Use Transactions for Related Operations</h3>
+                                <p class="text-gray-600">Wrap related database operations in transactions to maintain data integrity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
     </div>
 
-    <div class="feature">
-        <h3>💉 Dependency Injection</h3>
-        <p>Powerful IoC container with automatic dependency resolution</p>
-    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4">Ready to Build Something Amazing?</h3>
+                <p class="text-gray-400 mb-6">Start building modern PHP applications with the MVC framework</p>
+                <a href="#quick-start" class="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-all inline-block">
+                    Get Started
+                </a>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 PHP MVC Framework. Built with passion for clean code.</p>
+            </div>
+        </div>
+    </footer>
 
-    <div class="feature">
-        <h3>🗄️ Database Layer</h3>
-        <p>PDO-based database abstraction with query builder and ORM</p>
-    </div>
+    <script>
+        // Initialize highlight.js
+        hljs.highlightAll();
 
-    <div class="feature">
-        <h3>🔒 Security</h3>
-        <p>Built-in CSRF protection, XSS prevention, and password hashing</p>
-    </div>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
 
-    <div class="feature">
-        <h3>✅ Validation</h3>
-        <p>Comprehensive data validation system with custom rules</p>
-    </div>
-</div>
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu.classList.contains('translate-x-0')) {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('-translate-x-full');
+                    }
+                }
+            });
+        });
 
-<div class="cta">
-    <a href="/hello" class="btn">Get Started</a>
-</div>
-<?php $this->endSection(); ?>
+        // Active navigation highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        function updateActiveLink() {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink();
+
+        // Copy code functionality
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block');
+                const code = codeBlock.querySelector('code').textContent;
+
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'Copied!';
+                    this.classList.add('copied', 'bg-green-600');
+
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('copied', 'bg-green-600');
+                        this.classList.add('bg-purple-600');
+                    }, 2000);
+                });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const searchTerm = this.value.toLowerCase();
+
+            searchTimeout = setTimeout(() => {
+                if (searchTerm.length < 2) {
+                    // Clear highlights
+                    document.querySelectorAll('.search-highlight').forEach(el => {
+                        el.outerHTML = el.textContent;
+                    });
+                    return;
+                }
+
+                // Simple search: highlight matching text in sections
+                sections.forEach(section => {
+                    const content = section.textContent.toLowerCase();
+                    if (content.includes(searchTerm)) {
+                        section.style.display = '';
+                    }
+                });
+            }, 300);
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('-translate-x-full');
+            mobileMenu.classList.add('translate-x-0');
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-0');
+            mobileMenu.classList.add('-translate-x-full');
+        });
+
+        // Close mobile menu when clicking outside
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('-translate-x-full');
+            }
+        });
+
+        // Fade in animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
