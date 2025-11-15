@@ -36,7 +36,7 @@ services:
       - "${APP_SSL_PORT:-8443}:443"
     volumes:
       - ./:/var/www/html
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./storage/logs/nginx:/var/log/nginx
     networks:
