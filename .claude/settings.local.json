@@ -10,7 +10,14 @@
       "Bash(cat:*)",
       "Bash(docker-compose logs:*)",
       "Bash(docker-compose exec:*)",
-      "Bash(php -r:*)"
+      "Bash(php -r:*)",
+      "Bash(wget:*)",
+      "Bash(chmod:*)",
+      "Bash(/tmp/download-fonts.sh:*)",
+      "Bash(for file in /assets/js/tailwind-jit.js /assets/css/highlight-github-dark.min.css /assets/fonts/fonts.css)",
+      "Bash(do)",
+      "Bash(echo:*)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
