@@ -6,6 +6,8 @@
  * Global helper functions available throughout the application.
  */
 
+use Core\View\View;
+
 if (!function_exists('env')) {
     /**
      * Get an environment variable value
@@ -110,7 +112,7 @@ if (!function_exists('view')) {
      */
     function view(string $view, array $data = []): string
     {
-        return app(\Core\View\View::class)->render($view, $data);
+        return app(View::class)->render($view, $data);
     }
 }
 

@@ -2,10 +2,14 @@
 
 namespace Core\View;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
+
 /**
  * View Class
  *
- * A simple template engine for rendering views with support for
+ * Template engine for rendering views using Twig with support for
  * layouts, sections, and template inheritance.
  */
 class View
@@ -21,19 +25,9 @@ class View
     protected array $shared = [];
 
     /**
-     * The current layout being used
+     * Twig environment instance
      */
-    protected ?string $layout = null;
-
-    /**
-     * Sections defined in views
-     */
-    protected array $sections = [];
-
-    /**
-     * The current section being captured
-     */
-    protected ?string $currentSection = null;
+    protected Environment $twig;
 
     /**
      * Create a new view instance
@@ -43,6 +37,80 @@ class View
     public function __construct(?string $viewsPath = null)
     {
         $this->viewsPath = $viewsPath ?? APP_PATH . '/Views';
+        $this->initializeTwig();
+    }
+
+    /**
+     * Initialize Twig environment
+     *
+     * @return void
+     */
+    protected function initializeTwig(): void
+    {
+        $loader = new FilesystemLoader($this->viewsPath);
+
+        $config = config('view.twig', []);
+
+        $this->twig = new Environment($loader, [
+            'cache' => $config['cache'] ?? false,
+            'debug' => $config['debug'] ?? false,
+            'auto_reload' => $config['auto_reload'] ?? true,
+            'strict_variables' => $config['strict_variables'] ?? false,
+        ]);
+
+        // Add custom functions
+        $this->addTwigFunctions();
+    }
+
+    /**
+     * Add custom Twig functions
+     *
+     * @return void
+     */
+    protected function addTwigFunctions(): void
+    {
+        // Add config() function
+        $this->twig->addFunction(new TwigFunction('config', function ($key, $default = null) {
+            return config($key, $default);
+        }));
+
+        // Add env() function
+        $this->twig->addFunction(new TwigFunction('env', function ($key, $default = null) {
+            return env($key, $default);
+        }));
+
+        // Add url() function
+        $this->twig->addFunction(new TwigFunction('url', function ($path = '') {
+            return url($path);
+        }));
+
+        // Add asset() function
+        $this->twig->addFunction(new TwigFunction('asset', function ($path) {
+            return asset($path);
+        }));
+
+        // Add csrf_field() function
+        $this->twig->addFunction(new TwigFunction('csrf_field', function () {
+            return csrf_field();
+        }, ['is_safe' => ['html']]));
+
+        // Add csrf_token() function
+        $this->twig->addFunction(new TwigFunction('csrf_token', function () {
+            return csrf_token();
+        }));
+
+        // Add old() function for form repopulation
+        $this->twig->addFunction(new TwigFunction('old', function ($key, $default = '') {
+            return $_SESSION['_old_input'][$key] ?? $default;
+        }));
+
+        // Add errors() function
+        $this->twig->addFunction(new TwigFunction('errors', function ($key = null) {
+            if ($key === null) {
+                return $_SESSION['errors'] ?? [];
+            }
+            return $_SESSION['errors'][$key] ?? [];
+        }));
     }
 
     /**
@@ -54,133 +122,16 @@ class View
      */
     public function render(string $view, array $data = []): string
     {
-        $path = $this->findView($view);
+        // Convert dot notation to path (e.g., "users.index" => "users/index")
+        $view = str_replace('.', '/', $view);
 
-        if (!file_exists($path)) {
-            throw new \Exception("View [{$view}] not found at path [{$path}]");
-        }
+        // Add .twig extension
+        $template = $view . '.twig';
 
         // Merge shared data with view data
         $data = array_merge($this->shared, $data);
 
-        // Render the view
-        $content = $this->renderView($path, $data);
-
-        // If a layout is set, render within layout
-        if ($this->layout !== null) {
-            $layoutPath = $this->findView($this->layout);
-            $this->sections['content'] = $content;
-            $content = $this->renderView($layoutPath, $data);
-            $this->layout = null;
-            $this->sections = [];
-        }
-
-        return $content;
-    }
-
-    /**
-     * Render a view file
-     *
-     * @param string $path
-     * @param array $data
-     * @return string
-     */
-    protected function renderView(string $path, array $data): string
-    {
-        // Extract data to variables
-        extract($data, EXTR_SKIP);
-
-        // Start output buffering
-        ob_start();
-
-        // Include the view file
-        include $path;
-
-        // Get the buffered content
-        return ob_get_clean();
-    }
-
-    /**
-     * Find the view file path
-     *
-     * @param string $view
-     * @return string
-     */
-    protected function findView(string $view): string
-    {
-        // Convert dot notation to path (e.g., "users.index" => "users/index")
-        $view = str_replace('.', '/', $view);
-
-        return $this->viewsPath . '/' . $view . '.php';
-    }
-
-    /**
-     * Set the layout for the view
-     *
-     * @param string $layout
-     * @return void
-     */
-    public function extend(string $layout): void
-    {
-        $this->layout = $layout;
-    }
-
-    /**
-     * Start a section
-     *
-     * @param string $name
-     * @return void
-     */
-    public function section(string $name): void
-    {
-        $this->currentSection = $name;
-        ob_start();
-    }
-
-    /**
-     * End a section
-     *
-     * @return void
-     */
-    public function endSection(): void
-    {
-        if ($this->currentSection === null) {
-            throw new \Exception('Cannot end section: no section started');
-        }
-
-        $this->sections[$this->currentSection] = ob_get_clean();
-        $this->currentSection = null;
-    }
-
-    /**
-     * Yield a section's content
-     *
-     * @param string $name
-     * @param string $default
-     * @return void
-     */
-    public function yield(string $name, string $default = ''): void
-    {
-        echo $this->sections[$name] ?? $default;
-    }
-
-    /**
-     * Include a partial view
-     *
-     * @param string $view
-     * @param array $data
-     * @return void
-     */
-    public function include(string $view, array $data = []): void
-    {
-        $path = $this->findView($view);
-
-        if (!file_exists($path)) {
-            throw new \Exception("Partial view [{$view}] not found");
-        }
-
-        extract(array_merge($this->shared, $data), EXTR_SKIP);
-        include $path;
+        return $this->twig->render($template, $data);
     }
 
     /**
@@ -200,47 +151,12 @@ class View
     }
 
     /**
-     * Escape HTML entities
+     * Get the Twig environment instance
      *
-     * @param string|null $value
-     * @return string
+     * @return Environment
      */
-    public function escape(?string $value): string
+    public function getTwig(): Environment
     {
-        return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
-    }
-
-    /**
-     * Output escaped content
-     *
-     * @param string|null $value
-     * @return void
-     */
-    public function e(?string $value): void
-    {
-        echo $this->escape($value);
-    }
-
-    /**
-     * Check if a section exists
-     *
-     * @param string $name
-     * @return bool
-     */
-    public function hasSection(string $name): bool
-    {
-        return isset($this->sections[$name]);
-    }
-
-    /**
-     * Get a section's content
-     *
-     * @param string $name
-     * @param string $default
-     * @return string
-     */
-    public function getSection(string $name, string $default = ''): string
-    {
-        return $this->sections[$name] ?? $default;
+        return $this->twig;
     }
 }

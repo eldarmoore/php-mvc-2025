@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php $this->yield('title', config('app.name', 'MVC Framework')); ?></title>
+    <title>{% block title %}{{ config('app.name', 'MVC Framework') }}{% endblock %}</title>
     <style>
         * {
             margin: 0;
@@ -50,28 +50,28 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        <?php $this->yield('styles'); ?>
+        {% block styles %}{% endblock %}
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1><?php echo e(config('app.name', 'MVC Framework')); ?></h1>
+            <h1>{{ config('app.name', 'MVC Framework') }}</h1>
         </div>
     </header>
 
     <main class="container">
         <div class="content">
-            <?php $this->yield('content'); ?>
+            {% block content %}{% endblock %}
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; <?php echo date('Y'); ?> <?php echo e(config('app.name')); ?>. Built with Custom PHP MVC Framework.</p>
+            <p>&copy; {{ "now"|date("Y") }} {{ config('app.name') }}. Built with Custom PHP MVC Framework.</p>
         </div>
     </footer>
 
-    <?php $this->yield('scripts'); ?>
+    {% block scripts %}{% endblock %}
 </body>
 </html>

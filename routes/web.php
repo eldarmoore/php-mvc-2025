@@ -18,6 +18,13 @@ $router->get('/', function () {
     return view('welcome');
 });
 
+// Twig test page
+$router->get('/test', function () {
+    return view('test', [
+        'message' => 'Twig is working perfectly!'
+    ]);
+});
+
 // Simple closure route
 $router->get('/hello', function () {
     return 'Hello, World!';
